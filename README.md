@@ -20,6 +20,26 @@ Options:
 
 ### Dependencies
 
+#### Ubuntu
+
+This probably needs to be edited...
+
+ - `pkg-config`
+ - `libclang-dev`
+ - `libx11-dev`
+ - `libxcb1`
+ - `libxcb1-dev`
+ - `libxrandr2`
+ - `libxrandr-dev`
+ - `libdbus-1-3`
+ - `libdbus-1-dev`
+ - `librust-x11-dev`
+ - `libxtst-dev`
+ - `libpipewire-0.3-dev`
+ - `libwayland-dev`
+ - `libegl-dev`
+ - `libgbm-dev`
+
 #### Fedora
 
  - `egl`
