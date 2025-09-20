@@ -37,6 +37,6 @@ Options:
 
 ```
 git clone https://github.com/mssngtxtrs/ShotRS.git
-cd screenshot-rs
+cd ShotRS
 cargo build -r --target x86_64-unknown-linux-gnu
 ```
