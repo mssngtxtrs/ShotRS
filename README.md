@@ -22,8 +22,6 @@ Options:
 
 #### Ubuntu
 
-This probably needs to be edited...
-
  - `pkg-config`
  - `libclang-dev`
  - `libx11-dev`
