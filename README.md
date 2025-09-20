@@ -4,7 +4,7 @@ Simple screenshot utility written in Rust
 
 ## Usage
 
-`screenshot-rs [OPTIONS]`
+`ShotRS [OPTIONS]`
 
 Options:
 
