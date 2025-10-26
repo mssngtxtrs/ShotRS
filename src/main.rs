@@ -1,42 +1,29 @@
 #![warn(clippy::all, clippy::pedantic)]
 
-
-
 /* #####################
-  ##    CONSTANTS    ##
-  #####################*/
-
-
+##    CONSTANTS    ##
+#####################*/
 
 const DEFAULT_PATH_SUFFIX: &str = "";
 const DEFAULT_NAME_PREFIX: &str = "shotrs-";
 const DEFAULT_NAME_SUFFIX: &str = ".png";
 
-
-
 /*###################
-  ##    IMPORTS    ##
-  ###################*/
-
-
+##    IMPORTS    ##
+###################*/
 
 //--Parser for flags--
 use clap::Parser;
-//--Std for filesystem interaction and getting home directory path--
-use std::env;
-use std::fs;
+//--Std for filesystem interaction, getting home directory path and getting user input--
+use std::{env, fs};
 //--XCap for capturing screen--
 use xcap::Monitor;
 //--Chrono for setting --
 use chrono::Utc;
 
-
-
 /*######################
-  ##    STRUCTURES    ##
-  ######################*/
-
-
+##    STRUCTURES    ##
+######################*/
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -46,17 +33,13 @@ struct Args {
     path: String,
 
     ///Name of the file
-    #[arg(short, long, default_value_t = format!("{}{}", DEFAULT_NAME_PREFIX.to_string(), Utc::now().format("%H:%M:%S-%d.%m.%Y")))]
-    name: String
+    #[arg(short, long, default_value_t = format!("{}{}-monitor:name", DEFAULT_NAME_PREFIX.to_string(), Utc::now().format("%H:%M:%S-%d.%m.%Y")))]
+    name: String,
 }
 
-
-
 /*################
-  ##    MAIN    ##
-  ################*/
-
-
+##    MAIN    ##
+################*/
 
 fn main() {
     //--Parsing flags--
@@ -64,26 +47,23 @@ fn main() {
 
     //--Creating directory for screenshots if not exist--
     match fs::create_dir_all(&args.path) {
-        Ok(_) => {
-            println!("Folder \"{}\" already exist or was succesfully created", &args.path);
-            capture_screen(args.path, args.name);
-        },
+        Ok(()) => {
+            println!(
+                "Folder \"{}\" already exist or was succesfully created",
+                &args.path
+            );
+            capture_screen(&args.path, &args.name);
+        }
         Err(error) => eprintln!("Error creating new folder: {error}"),
-    };
-
-    
+    }
 }
 
-
-
 /*#####################
-  ##    FUNCTIONS    ##
-  #####################*/
-
-
+##    FUNCTIONS    ##
+#####################*/
 
 //----Capture screen----
-fn capture_screen(path: String, name: String) {
+fn capture_screen(path: &str, name: &str) {
     //--Getting monitors--
     let monitors = Monitor::all().expect("Error getting monitors!");
 
@@ -93,13 +73,21 @@ fn capture_screen(path: String, name: String) {
         let image = monitor.capture_image().expect("Error capturing image!");
 
         //--Create a name for screenshot--
-        let screenshot_name = format!("{}/{}-monitor:{}{}", path, name, monitor.name().unwrap(), DEFAULT_NAME_SUFFIX);
+        let screenshot_name = format!(
+            "{}/{}-monitor:{}{}",
+            path,
+            name,
+            monitor.name().unwrap(),
+            DEFAULT_NAME_SUFFIX
+        );
 
         //--Save screenshot--
         match image.save(&screenshot_name) {
-            Ok(_) => println!("Screenshot was taken and saved at \"{screenshot_name}\""),
-            Err(error) => eprintln!("Error taking and saving screenshot at \"{screenshot_name}\": {error}"),
-        };
+            Ok(()) => println!("Screenshot was taken and saved at \"{screenshot_name}\""),
+            Err(error) => {
+                eprintln!("Error taking and saving screenshot at \"{screenshot_name}\": {error}");
+            }
+        }
     }
 }
 

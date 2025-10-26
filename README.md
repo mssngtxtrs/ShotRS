@@ -10,7 +10,7 @@ Options:
 
 `-p, --path` - Path where to store screenshots [Default: home directory (~/)]
 
-`-n, --name` - Name of the file [Default: hh:mm:ss-dd.mm.yyyy]
+`-n, --name` - Name of the file [Default: shotrs-hh:mm:ss-dd.mm.yyyy-monitor:name.png]
 
 `-h, --help` - Print help
 
